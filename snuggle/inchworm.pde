@@ -1,10 +1,6 @@
 // float di = 0.01;
-int MIN_W = 0;
-int MIN_H = 0;
-int MAX_W = 1440;
-int MAX_H = 900;
 
-ArrayList<Inchworm> worms = new ArrayList<Inchworm>();
+// ArrayList<Inchworm> worms = new ArrayList<Inchworm>();
 
 class Position {
   float x;
@@ -74,13 +70,13 @@ class Inchworm {
     di = speed;
   }
 
-  Inchworm(float x, float y, color c, float b) {
+  Inchworm(float x, float y, float b, float speed) {
     setup();
 
     this.x = x;
     this.y = y;
     this.bearing = b;
-    this.c = c;
+    this.speed = speed;
   }
 
   Inchworm() {

@@ -23,6 +23,8 @@ class Snuggler extends Inchworm {
   float previousBearing;
   boolean dirty;
 
+  float grokFactor = 0.05;
+
   Snuggler(float x, float y, float b, float speed) {
     super(x, y, b, speed);
     previousBearing = this.bearing;
@@ -62,13 +64,14 @@ class Snuggler extends Inchworm {
 
         if (this.snuggling(worms.get(i))) {
           println("I am snuggling with worm " + i);
+          this.grok(worms.get(i));
           if (currentSnugglePartners.containsKey(i)) {
             currentSnugglePartners.put(i,currentSnugglePartners.get(i)+1);
           }
           else {
             currentSnugglePartners.put(i, 1);
           }
-          println("currentSnugglePartners.get(i): "+currentSnugglePartners.get(i));
+          // println("currentSnugglePartners.get(i): "+currentSnugglePartners.get(i));
           // Worms should average towards each other
           //   color, size, etc should change towards the average of the two worms values
         } else {
@@ -138,6 +141,47 @@ class Snuggler extends Inchworm {
     //   bearingDelta = 0;
     // }
     return this.bearing + bearingDelta;
+  }
+
+  void grok(Snuggler other) {
+    // this will modify many of this Snuggler's params to be avg'd with other
+    // first attempt will include params: color, length, width, and speed
+
+    // color
+    color meanColor = color((red(this.c) + red(other.c))/2.0, (green(this.c) + green(other.c))/2.0, (blue(this.c) + blue(other.c))/2.0);
+    color newC = color(red(this.c)+grokFactor*(red(this.c)-red(meanColor)), green(this.c)+grokFactor*(green(this.c)-green(meanColor)), blue(this.c)+grokFactor*(blue(this.c)-blue(meanColor)));
+    println("this.c: "+red(this.c)+","+green(this.c)+","+blue(this.c));
+    println("newC: "+red(newC)+","+green(newC)+","+blue(newC));
+    this.c = newC;
+
+    // length
+    float meanLength = (this.l+other.l)/2.0;
+    float newL = this.l+grokFactor*(this.l-meanLength);
+    println("this.l: "+this.l);
+    println("newL: "+newL);
+    // if (newL > 0) {
+    //   this.l = newL;
+    // } it freaks out when i change its length! WHY?!
+
+    // width
+    float meanWidth = (this.w+other.w)/2.0;
+    float newW = this.w + grokFactor*(this.w-meanWidth);
+    println("this.w: "+this.w);
+    println("newW: "+newW);
+    // if (newW > 0) {
+    //   this.w = newW;
+    // } 
+
+    // speed
+    float meanSpeed = (this.speed+other.speed)/2.0;
+    float newSpeed = this.speed + grokFactor*(this.speed-meanSpeed);
+    println("this.speed: "+this.speed);
+    println("newSpeed: "+newSpeed);
+    // if (newSpeed > 0) {
+    //   this.speed = newSpeed;
+    // }
+
+
   }
 };
 

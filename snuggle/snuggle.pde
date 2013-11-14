@@ -14,6 +14,8 @@ int MAX_H = 800;
 class Snuggler extends Inchworm {
 
   ArrayList<Snuggler> noticedWorms = new ArrayList<Snuggler>();
+  HashMap<Integer,Integer> currentSnugglePartners = new HashMap<Integer,Integer>();
+
 
   float seeingness = 300.0; // dependent on number of worms and/or length?
   float bearingStep = radians(5); // amount to turn when noticing other worm
@@ -60,8 +62,17 @@ class Snuggler extends Inchworm {
 
         if (this.snuggling(worms.get(i))) {
           println("I am snuggling with worm " + i);
+          if (currentSnugglePartners.containsKey(i)) {
+            currentSnugglePartners.put(i,currentSnugglePartners.get(i)+1);
+          }
+          else {
+            currentSnugglePartners.put(i, 1);
+          }
+          println("currentSnugglePartners.get(i): "+currentSnugglePartners.get(i));
           // Worms should average towards each other
           //   color, size, etc should change towards the average of the two worms values
+        } else {
+          currentSnugglePartners.put(i, 0);
         }
       }
     }
@@ -71,7 +82,7 @@ class Snuggler extends Inchworm {
   boolean snuggling(Snuggler other) {
     //if our head or tail is within a threshold of other's head or tail
     // println("this.headDistance(other): "+this.headDistance(other));
-    float threshold = 50;
+    float threshold = 150;
     if ((this.headDistance(other) < threshold || this.distance(this.xhead, other.x, this.yhead, other.y) < threshold) &&
         (this.tailDistance(other) < threshold || this.distance(this.x, other.xhead, this.y, other.yhead) < threshold)) {
       return true;

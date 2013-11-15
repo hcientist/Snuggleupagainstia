@@ -59,7 +59,7 @@ class Inchworm {
 
     bearing = random(TAU);
     c = color(random(255), random(255), random(255));
-    println("c: "+c);
+    // println("c: "+c);
 
     w = random(MIN_WORM_WIDTH, MAX_WORM_WIDTH);
     l = w * random(MIN_L_RATIO, MAX_L_RATIO);

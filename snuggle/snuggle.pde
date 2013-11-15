@@ -75,6 +75,11 @@ class Snuggler extends Inchworm {
           // Worms should average towards each other
           //   color, size, etc should change towards the average of the two worms values
         } else {
+          if (currentSnugglePartners.containsKey(i) && currentSnugglePartners.get(i) != 0) {
+            println("i stopped snuggling with worm: " + i);
+            // so here is where we might tell each worm to start working toward a new bearing
+            // we might also tell the worm to change its color (or else they will all converge)
+          }
           currentSnugglePartners.put(i, 0);
         }
       }
@@ -148,17 +153,17 @@ class Snuggler extends Inchworm {
     // first attempt will include params: color, length, width, and speed
 
     // color
-    color meanColor = color((red(this.c) + red(other.c))/2.0, (green(this.c) + green(other.c))/2.0, (blue(this.c) + blue(other.c))/2.0);
-    color newC = color(red(this.c)+grokFactor*(red(this.c)-red(meanColor)), green(this.c)+grokFactor*(green(this.c)-green(meanColor)), blue(this.c)+grokFactor*(blue(this.c)-blue(meanColor)));
-    println("this.c: "+red(this.c)+","+green(this.c)+","+blue(this.c));
-    println("newC: "+red(newC)+","+green(newC)+","+blue(newC));
+    // color meanColor = color((red(this.c) + red(other.c))/2.0, (green(this.c) + green(other.c))/2.0, (blue(this.c) + blue(other.c))/2.0);
+    color newC = color(red(this.c)+(red(other.c)-red(this.c))*grokFactor, green(this.c)+(green(other.c)-green(this.c))*grokFactor, blue(this.c)+(blue(other.c)-blue(this.c))*grokFactor);
+    // println("this.c: "+red(this.c)+","+green(this.c)+","+blue(this.c));
+    // println("newC: "+red(newC)+","+green(newC)+","+blue(newC));
     this.c = newC;
 
     // length
     float meanLength = (this.l+other.l)/2.0;
     float newL = this.l+grokFactor*(this.l-meanLength);
-    println("this.l: "+this.l);
-    println("newL: "+newL);
+    // println("this.l: "+this.l);
+    // println("newL: "+newL);
     // if (newL > 0) {
     //   this.l = newL;
     // } it freaks out when i change its length! WHY?!
@@ -166,8 +171,8 @@ class Snuggler extends Inchworm {
     // width
     float meanWidth = (this.w+other.w)/2.0;
     float newW = this.w + grokFactor*(this.w-meanWidth);
-    println("this.w: "+this.w);
-    println("newW: "+newW);
+    // println("this.w: "+this.w);
+    // println("newW: "+newW);
     // if (newW > 0) {
     //   this.w = newW;
     // } 
@@ -175,8 +180,8 @@ class Snuggler extends Inchworm {
     // speed
     float meanSpeed = (this.speed+other.speed)/2.0;
     float newSpeed = this.speed + grokFactor*(this.speed-meanSpeed);
-    println("this.speed: "+this.speed);
-    println("newSpeed: "+newSpeed);
+    // println("this.speed: "+this.speed);
+    // println("newSpeed: "+newSpeed);
     // if (newSpeed > 0) {
     //   this.speed = newSpeed;
     // }
